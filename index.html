@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Andreos — игры, приложения, сайты и AI-агенты</title>
+<meta name="description" content="Andreos делает с помощью ИИ игры, приложения, сайты и AI-агентов. Новинка: «Дорога в океан», вырасти рыбку и отпусти её на свободу. Листай историю, ищи секреты и играй.">
+<meta property="og:title" content="Andreos — превращаю идеи в работающие проекты">
+<meta property="og:description" content="Игры, приложения, сайты и AI-агенты, которые я делаю с помощью ИИ. Листай историю и играй прямо на сайте.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aasolo.github.io/misterandreos/">
+<meta property="og:site_name" content="Andreos">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:image" content="https://aasolo.github.io/misterandreos/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Andreos: игры, приложения, сайты и AI-агенты">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://aasolo.github.io/misterandreos/og.png">
+<meta name="theme-color" content="#f5f6fb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;700;900&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<!-- Счётчик посещений GoatCounter: замените misterandreos на свой код, если он другой -->
+<script data-goatcounter="https://misterandreos.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<style>
+  :root{
+    --bg:#f5f6fb; --bg2:#ffffff; --ink:#1e2140; --muted:#5d6080; --line:#1e2140; --card:#ffffff; --on-ink:#ffffff; --glass:rgba(255,255,255,.85); --rule:rgba(30,33,64,.3);
+    --sun:#f2b705; --code:#1fa463; --sea:#1c9cc0; --soft:#e7e9f5; --gold:#e8a800;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1120; --bg2:#151829; --ink:#e9eaf6; --muted:#a3a6c4; --line:#dfe2f5; --sun:#f7c948; --code:#4cd88a; --sea:#5fcbe9; --soft:#2a2e4a; --gold:#f2b705; --card:#1b1f36; --on-ink:#12142a; --glass:rgba(27,31,54,.85); --rule:rgba(233,234,246,.25);}}
+  :root[data-theme="dark"]{--bg:#0f1120; --bg2:#151829; --ink:#e9eaf6; --muted:#a3a6c4; --line:#dfe2f5; --sun:#f7c948; --code:#4cd88a; --sea:#5fcbe9; --soft:#2a2e4a; --gold:#f2b705; --card:#1b1f36; --on-ink:#12142a; --glass:rgba(27,31,54,.85); --rule:rgba(233,234,246,.25);}
+  html{color-scheme:light}:root[data-theme="dark"]{color-scheme:dark}
+  body{transition:background-color .4s,color .4s}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{background:var(--bg);color:var(--ink);font-family:"Golos Text",system-ui,sans-serif;line-height:1.55;font-size:18px;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;color:inherit;cursor:pointer}
+  :focus-visible{outline:2px solid var(--ink);outline-offset:4px;border-radius:8px}
+
+  /* fixed chrome */
+  .topfade{position:fixed;top:0;left:0;right:0;height:76px;z-index:4;pointer-events:none;background:linear-gradient(var(--bg) 45%,transparent)}
+  .brand{position:fixed;top:18px;left:18px;z-index:5;font-weight:700;font-size:14px;line-height:1.1}
+  .brand span{display:block;font-weight:400;color:var(--muted);font-size:12px}
+  .tools{position:fixed;top:14px;right:14px;z-index:5;display:flex;gap:8px}
+  .chip{font-size:14px;font-weight:500;padding:8px 13px;border:1px solid var(--ink);border-radius:99px;background:var(--glass);backdrop-filter:blur(6px);display:flex;align-items:center;gap:6px}
+  .chip[aria-pressed="true"]{background:var(--ink);color:var(--on-ink)}
+  .eq{display:inline-flex;gap:2px;align-items:flex-end;height:12px}
+  .eq i{width:3px;height:4px;background:currentColor;border-radius:2px}
+  .chip[aria-pressed="true"] .eq i{animation:eq 1s ease-in-out infinite}
+  .chip[aria-pressed="true"] .eq i:nth-child(2){animation-delay:.2s}.chip[aria-pressed="true"] .eq i:nth-child(3){animation-delay:.4s}
+  @keyframes eq{50%{height:12px}}
+  .secrets{position:fixed;left:14px;bottom:16px;z-index:5;font-size:14px;font-weight:500;padding:8px 13px;border-radius:99px;background:var(--card);border:1px dashed var(--ink)}
+  .secrets b{font-weight:900}
+  .brand{padding-bottom:7px}.progress{position:absolute;left:0;bottom:0;height:3px;border-radius:3px;background:var(--sun);width:0}
+  .toast{position:fixed;left:50%;bottom:64px;transform:translate(-50%,20px);opacity:0;z-index:7;background:var(--ink);color:var(--on-ink);padding:12px 18px;border-radius:14px;font-weight:500;font-size:15px;max-width:90vw;text-align:center;transition:.35s;pointer-events:none}
+  .toast.on{opacity:1;transform:translate(-50%,0)}
+
+  /* chapters */
+  .ch{min-height:100vh;min-height:100svh;display:grid;place-items:center;padding:96px 20px 70px;position:relative}
+  .ch:nth-of-type(even){background:var(--bg2)}
+  .inner{width:100%;max-width:900px;display:grid;gap:28px;align-items:center;text-align:center;justify-items:center}
+  @media (min-width:820px){
+    .inner.split{grid-template-columns:1fr 1fr;text-align:left;justify-items:start}
+    .inner.split.rev .art{order:2}
+    .inner.split .txt p{margin-left:0}
+  }
+  .art{width:min(320px,76vw);aspect-ratio:1;position:relative}
+  .art svg{width:100%;height:100%;overflow:visible}
+  .art path,.art line,.art rect,.art circle,.art ellipse,.art polyline{fill:none;stroke:var(--line);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:fill .5s}
+  .art .sun{stroke:var(--sun)} .art .code{stroke:var(--code)} .art .sea{stroke:var(--sea)}
+  .secret{cursor:pointer}
+  .eye{transform-box:fill-box;transform-origin:center}
+  .secret:hover svg{transform:rotate(-2deg);transition:transform .3s}
+  .num{font-family:Caveat,cursive;font-size:26px;color:var(--sea)}
+  h1{font-size:clamp(44px,12vw,104px);line-height:.95;font-weight:900;letter-spacing:-.04em}
+  h2{font-size:clamp(32px,7vw,56px);line-height:1;font-weight:900;letter-spacing:-.03em}
+  .txt p{color:var(--muted);max-width:34ch;margin:12px auto 0}
+  .hint{font-family:Caveat,cursive;font-size:24px;color:var(--sea);margin-top:16px}
+  .hint i{display:inline-block;font-style:normal;animation:nudge 1.6s ease-in-out infinite}
+  @keyframes nudge{50%{transform:translateY(6px)}}
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .8s ease,transform .8s ease}
+  .reveal.on{opacity:1;transform:none}
+  .btn{display:inline-block;margin-top:20px;font-weight:700;padding:13px 20px;border-radius:12px;background:var(--ink);color:var(--on-ink);border:0}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink);margin-left:8px}
+  .news{display:flex;gap:10px;align-items:center;margin-top:18px;padding:10px 14px;border:1px solid var(--ink);border-radius:14px;background:var(--card);font-size:15px;line-height:1.35;max-width:520px;text-align:left}
+  .news b{flex:none;font-size:12px;text-transform:uppercase;letter-spacing:.06em;background:var(--sea);color:#fff;padding:4px 8px;border-radius:8px}
+  .news i{font-style:normal;font-weight:700;margin-left:auto}
+  .num .new{color:var(--sea);font-weight:700}
+  .lead{font-weight:700;margin-top:12px}
+  .tag{display:inline-block;margin-top:12px;font-size:13px;color:var(--ink);border:1px dashed var(--ink);padding:3px 10px;border-radius:99px}
+  .bubble{position:absolute;left:50%;top:-6px;transform:translate(-50%,-100%) scale(.8);opacity:0;background:var(--ink);color:var(--on-ink);font-size:14px;padding:8px 12px;border-radius:12px;white-space:nowrap;transition:.3s;pointer-events:none}
+  .bubble.on{opacity:1;transform:translate(-50%,-100%) scale(1)}
+  .lit .glow{fill:rgba(242,183,5,.25)!important}
+
+  /* idea generator */
+  .gen{margin-top:20px;width:100%;max-width:400px;border:1px dashed var(--ink);border-radius:18px;padding:16px;background:var(--card);text-align:left}
+  .gen small{color:var(--muted);font-size:13px}
+  .gen p.idea{font-family:Caveat,cursive;font-size:28px;line-height:1.15;color:var(--ink);margin:6px 0 12px;max-width:none;min-height:66px}
+  .gen .row{display:flex;gap:8px;flex-wrap:wrap}
+  .gen .btn{margin-top:0;padding:10px 14px;font-size:15px}
+
+  /* play */
+  .daily{display:flex;gap:12px;align-items:center;justify-content:space-between;width:100%;max-width:420px;padding:14px 16px;border:1px dashed var(--ink);border-radius:16px;text-align:left;background:var(--card)}
+  .daily small{display:block;color:var(--muted);font-size:13px}
+  .daily b{font-size:18px}
+  .daily .done{color:var(--code)}
+  .stage{position:relative;width:100%;max-width:420px;border-radius:18px;overflow:hidden;border:1px solid var(--ink);background:linear-gradient(#bfe6fb,#eef8fe)}
+  canvas{display:block;width:100%;height:auto;touch-action:manipulation;cursor:pointer}
+  .hud{position:absolute;top:10px;left:10px;right:10px;display:flex;justify-content:space-between;font-size:13px;font-weight:700;pointer-events:none}
+  .hud span{background:#fff;color:#1e2140;padding:3px 10px;border-radius:99px}
+  .overlay{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+  .overlay div{background:#fff;color:#1e2140;border:1px solid #1e2140;border-radius:14px;padding:14px 18px;font-weight:700;max-width:80%;text-align:center}
+  .overlay small{display:block;font-weight:400;color:#5d6080;font-size:14px;margin-top:4px}
+  .overlay[hidden]{display:none}
+  :root[data-theme="dark"] .stage{background:linear-gradient(#2a3a6e,#121a33)}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .stage{background:linear-gradient(#2a3a6e,#121a33)}}
+  .stats{display:flex;gap:10px;width:100%;max-width:420px}
+  .stats div{flex:1;border:1px solid var(--soft);background:var(--card);border-radius:14px;padding:10px 14px;text-align:left}
+  .stats b{display:block;font-size:28px;font-weight:900;line-height:1.1}
+  .stats span{font-size:13px;color:var(--muted)}
+  .goldnote{font-size:14px;color:var(--gold);font-weight:700}
+
+  .svc{list-style:none;margin-top:16px;text-align:left;max-width:360px}
+  .svc li{padding:10px 0;border-bottom:1px dashed var(--rule)}
+  .ic{width:1.25em;height:1.25em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.25em;flex:none}
+  .svc li{display:flex;gap:10px;align-items:flex-start}
+  .svc li .ic{color:var(--sea);margin-top:.15em}
+  .secrets .ic{color:var(--ink)}
+  .goldnote .ic,.toast .ic{color:var(--sun)}
+  .done .ic{color:var(--code)}
+  @media (max-width:480px){#themeLabel{display:none}.brand span{display:none}.brand{top:24px}.tools{gap:6px;right:10px}.chip{padding:8px 11px}}
+  footer{padding:30px 20px 70px;text-align:center;color:var(--muted);font-size:14px}
+  footer a{color:var(--ink);margin:0 8px}
+
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+    .hint i,.chip[aria-pressed="true"] .eq i{animation:none}
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15 L20 20"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M10.5 18.5 H13.5"/></symbol>
+  <symbol id="i-web" viewBox="0 0 24 24"><rect x="2.5" y="4" width="19" height="16" rx="2.5"/><path d="M2.5 8.5 H21.5"/><path d="M6 13 H14"/><path d="M6 16 H11"/></symbol>
+  <symbol id="i-bot" viewBox="0 0 24 24"><rect x="4" y="7.5" width="16" height="12" rx="3.5"/><path d="M12 7.5 V4"/><circle cx="12" cy="3.2" r="1"/><circle cx="9" cy="13" r="1.2"/><circle cx="15" cy="13" r="1.2"/><path d="M9.5 16.5 C11 17.5 13 17.5 14.5 16.5"/></symbol>
+  <symbol id="i-game" viewBox="0 0 24 24"><path d="M7 8 H17 C19.8 8 21.5 10.5 21 13.5 L20.4 16.5 C20 18.6 17.6 19.2 16.3 17.6 L14.8 15.8 H9.2 L7.7 17.6 C6.4 19.2 4 18.6 3.6 16.5 L3 13.5 C2.5 10.5 4.2 8 7 8 Z"/><path d="M7.5 11 V14"/><path d="M6 12.5 H9"/><circle cx="16" cy="12" r=".9"/><circle cx="17.5" cy="13.8" r=".9"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3 L13.8 10.2 L21 12 L13.8 13.8 L12 21 L10.2 13.8 L3 12 L10.2 10.2 Z"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 21 C7.5 21 5.5 17.8 5.5 15 C5.5 11 9 9.5 9.5 5.5 C12.5 7.5 13 10 12.5 12 C14 11.5 15 10 15.2 8.5 C17.5 10.5 18.5 13 18.5 15 C18.5 18 16.3 21 12 21 Z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5V5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19C5 10 10 5 20 4c-1 10-6 15-15 15Z"/><path d="M5 19 13 11"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5 L10 17.5 L19 7"/></symbol>
+</svg>
+<div class="topfade"></div>
+<a class="brand" href="#top">Andreos<span>игры, приложения, AI</span><i class="progress" id="progress"></i></a>
+<div class="tools">
+  <button class="chip" id="themeBtn" type="button" aria-label="Тема сайта"><svg class="ic"><use id="themeIco" href="#i-moon"/></svg><span id="themeLabel">Тёмная</span></button>
+  <button class="chip" id="music" type="button" aria-pressed="false" aria-label="Музыка и звуки сайта"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><svg class="ic" style="margin-left:-2px"><use href="#i-leaf"/></svg><span id="musicLabel">Природа</span></button>
+  <a class="chip" data-track="top-dm" href="https://ig.me/m/misterandreos">Написать</a>
+</div>
+<div class="secrets" id="secrets" title="Нажимай на рисунки, чтобы найти секреты"><svg class="ic"><use href="#i-search"/></svg> Секреты <b id="secN">0</b>/3</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<main>
+  <!-- Интро -->
+  <section class="ch" id="top" data-draw>
+    <div class="inner">
+      <div class="art"><svg viewBox="0 0 200 200" aria-hidden="true">
+        <path d="M58 160 L100 40 L142 160"/><path d="M74 116 L126 116"/>
+        <path class="sun" d="M40 176 C80 168 120 184 162 172"/>
+      </svg></div>
+      <div class="txt reveal">
+        <h1>Идеи, которые оживают</h1>
+        <p>Я Andreos. С помощью ИИ превращаю идеи в игры, приложения, сайты и AI-агентов. Листай историю, ищи 3 спрятанных секрета, а в конце тебя ждёт игра с наградой.</p>
+        <a class="news" data-track="intro-ocean" href="https://aasolo.github.io/doroga-v-okean/"><b>Новая игра</b> Дорога в океан: вырасти рыбку и отпусти её на свободу <i>→</i></a>
+        <div class="hint">включи звуки природы и листай вниз <i>↓</i></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. Идея + генератор -->
+  <section class="ch" data-draw>
+    <div class="inner split">
+      <div class="art secret" id="sLamp" data-secret="lamp" role="button" tabindex="0" aria-label="Лампочка. Нажми на неё.">
+        <span class="bubble" id="bLamp">Секрет найден: идея загорелась!</span>
+        <svg viewBox="0 0 200 200" aria-hidden="true">
+          <path class="glow" d="M100 30 C62 30 44 60 50 88 C54 108 72 118 74 138 L126 138 C128 118 146 108 150 88 C156 60 138 30 100 30 Z"/>
+          <path d="M78 152 L122 152"/><path d="M84 166 L116 166"/>
+          <path class="sun" d="M88 112 C92 96 100 92 100 80 C100 92 108 96 112 112"/>
+          <path class="sun" d="M30 40 L18 32"/><path class="sun" d="M170 40 L182 32"/><path class="sun" d="M100 14 L100 2"/>
+        </svg>
+      </div>
+      <div class="txt reveal">
+        <div class="num">глава 1</div>
+        <h2>Всё начинается с идеи</h2>
+        <p>Игра, приложение или бот: хороший проект понятен с первого взгляда. А идею игры можно придумать прямо сейчас, попробуй:</p>
+        <div class="gen">
+          <small>Генератор идей</small>
+          <p class="idea" id="idea">Нажми кнопку, и я придумаю игру</p>
+          <div class="row">
+            <button class="btn" id="genBtn" type="button">Придумать игру</button>
+            <a class="btn ghost" id="sendIdea" data-track="idea-send" href="https://ig.me/m/misterandreos" style="margin-left:0">Хочу такую</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. ИИ -->
+  <section class="ch" data-draw>
+    <div class="inner split rev">
+      <div class="art secret" id="sBot" data-secret="bot" role="button" tabindex="0" aria-label="Робот. Нажми на него.">
+        <span class="bubble" id="bBot">Привет! Я помогаю писать код</span>
+        <svg viewBox="0 0 200 200" aria-hidden="true">
+          <rect x="40" y="56" width="120" height="96" rx="18"/>
+          <path d="M100 56 L100 34"/><circle class="sun" cx="100" cy="28" r="6"/>
+          <circle class="code eye" cx="76" cy="98" r="9"/><circle class="code eye" cx="124" cy="98" r="9"/>
+          <path class="code" d="M78 126 C90 134 110 134 122 126"/>
+          <path d="M40 100 L24 100"/><path d="M160 100 L176 100"/>
+          <path d="M70 152 L70 172"/><path d="M130 152 L130 172"/>
+        </svg>
+      </div>
+      <div class="txt reveal">
+        <div class="num">глава 2</div>
+        <h2>Потом ИИ и код</h2>
+        <p>Я ставлю ИИ задачу, и мы вместе собираем проект шаг за шагом: логика, дизайн, тексты, звуки. Потом даю попробовать людям и полирую каждую деталь.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. HackQuest -->
+  <section class="ch" data-draw id="learn">
+    <div class="inner split">
+      <div class="art"><svg viewBox="0 0 200 200" aria-hidden="true">
+        <rect x="26" y="44" width="148" height="112" rx="12"/>
+        <path d="M26 66 L174 66"/><circle cx="40" cy="55" r="3"/><circle cx="52" cy="55" r="3"/><circle cx="64" cy="55" r="3"/>
+        <path class="code" d="M44 88 L58 98 L44 108"/><path class="code" d="M66 108 L96 108"/>
+        <path class="code" d="M44 128 L120 128"/><path class="code" d="M44 142 L92 142"/>
+      </svg></div>
+      <div class="txt reveal">
+        <div class="num">глава 3</div>
+        <h2>Первой была HackQuest</h2>
+        <p>Хакерская игра, где ты взламываешь корпорацию NEXUS и по пути учишь Python. 30 миссий, можно начинать с нуля.</p>
+        <a class="btn" data-track="card-hackquest" href="https://aasolo.github.io/HackQuest-3.0/">Играть</a>
+        <div><span class="tag">подросткам и взрослым</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Бутербашня -->
+  <section class="ch" data-draw id="games">
+    <div class="inner split rev">
+      <div class="art"><svg viewBox="0 0 200 200" aria-hidden="true">
+        <path class="sun" d="M52 60 C60 30 140 30 148 60 Z"/>
+        <path d="M46 74 L154 74"/><path class="code" d="M50 90 C70 96 90 84 110 92 C128 98 140 86 152 92"/>
+        <rect x="44" y="102" width="112" height="16" rx="8"/>
+        <path class="sun" d="M48 128 L152 128"/>
+        <rect x="40" y="136" width="120" height="16" rx="8"/>
+        <path d="M44 162 C50 176 150 176 156 162 Z"/>
+      </svg></div>
+      <div class="txt reveal">
+        <div class="num">глава 4</div>
+        <h2>Потом появилась Бутербашня</h2>
+        <p>Аркада на рекорд: строишь башню из бургеров, всё лишнее отваливается. В неё играют и дети, и взрослые.</p>
+        <a class="btn" data-track="card-buterbashnya" href="https://aasolo.github.io/ButerBashnya-1.0/">Играть</a>
+        <div><span class="tag">для всех возрастов</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Не только игры -->
+  <section class="ch" data-draw id="more">
+    <div class="inner split">
+      <div class="art"><svg viewBox="0 0 200 200" aria-hidden="true">
+        <rect x="22" y="40" width="104" height="76" rx="10"/><path d="M22 56 L126 56"/>
+        <path class="sea" d="M36 72 L80 72"/><path class="sea" d="M36 86 L104 86"/><path class="sea" d="M36 100 L66 100"/>
+        <rect x="134" y="60" width="46" height="84" rx="10"/><path d="M150 132 L164 132"/>
+        <path class="code" d="M144 80 L170 80"/><path class="code" d="M144 94 L162 94"/>
+        <path d="M56 148 C56 136 90 136 90 148 L90 168 C90 176 56 176 56 168 Z"/>
+        <circle class="sun" cx="66" cy="156" r="3"/><circle class="sun" cx="80" cy="156" r="3"/>
+        <path class="sun" d="M73 136 L73 128"/><circle class="sun" cx="73" cy="125" r="3"/>
+        <path d="M100 160 L124 160"/><path class="code" d="M112 148 L124 160 L112 172"/>
+      </svg></div>
+      <div class="txt reveal">
+        <div class="num">глава 5</div>
+        <h2>И это не только игры</h2>
+        <p>Игры — самое заметное, но я делаю гораздо больше. С ИИ можно быстро собрать почти любой цифровой проект.</p>
+        <ul class="svc">
+          <li><svg class="ic"><use href="#i-phone"/></svg><span>Приложения для работы, учёбы и бизнеса</span></li>
+          <li><svg class="ic"><use href="#i-web"/></svg><span>Сайты и лендинги, как этот</span></li>
+          <li><svg class="ic"><use href="#i-bot"/></svg><span>AI-агенты: чат-боты, помощники для клиентов, автоматизация рутины</span></li>
+          <li><svg class="ic"><use href="#i-game"/></svg><span>Игры для брендов, событий и обучения</span></li>
+        </ul>
+        <a class="btn" data-track="more-dm" href="https://ig.me/m/misterandreos">Рассказать о задаче</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Новинка: Дорога в океан -->
+  <section class="ch" data-draw id="ocean">
+    <div class="inner split">
+      <div class="art secret" id="sFish" data-secret="fish" role="button" tabindex="0" aria-label="Рыбка. Нажми на неё.">
+        <span class="bubble" id="bFish">Буль! Это я из «Дороги в океан»</span>
+        <svg viewBox="0 0 200 200" aria-hidden="true" id="fishSvg">
+          <path class="sea" d="M40 100 C70 60 130 60 150 100 C130 140 70 140 40 100 Z"/>
+          <path class="sea" d="M150 100 L180 76 L176 100 L180 124 Z"/>
+          <circle cx="72" cy="94" r="5"/>
+          <path d="M96 76 C104 90 104 110 96 124"/><path d="M116 78 C124 92 124 108 116 122"/>
+          <circle cx="36" cy="58" r="6"/><circle cx="52" cy="38" r="4"/><circle cx="160" cy="44" r="5"/>
+        </svg>
+      </div>
+      <div class="txt reveal">
+        <div class="num">глава 6 · <span class="new">новинка</span></div>
+        <h2>Дорога в океан уже вышла</h2>
+        <p>Помнишь рыбку-подсказку? Теперь она живая и ждёт тебя. Корми малька, ухаживай за аквариумом, и ты увидишь, как с каждым днём он растёт и становится ярче. Тёплый свет, тихая музыка: сюда хочется возвращаться.</p>
+        <p class="lead">А через 30 дней ты сам откроешь ему дорогу в океан.</p>
+        <a class="btn" data-track="card-ocean" href="https://aasolo.github.io/doroga-v-okean/">Начать путь рыбки</a><a class="btn ghost" data-track="ocean-dm" href="https://ig.me/m/misterandreos">Показать, кого вырастил</a>
+        <div><span class="tag">бесплатно · телефон и компьютер · успокаивает</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Сыграй -->
+  <section class="ch" id="play">
+    <div class="inner">
+      <div class="txt reveal">
+        <div class="num">глава 7</div>
+        <h2>Твоя очередь</h2>
+        <p>Нажимай, когда слой над башней. Каждый день новая цель. Найди все 3 секрета, и башня станет золотой.</p>
+      </div>
+      <div class="daily"><div><small>Вызов дня</small><b id="dailyText">Построй 12 этажей</b></div></div>
+      <div class="stage">
+        <canvas id="c" width="420" height="380" aria-label="Мини-игра: башня из бургеров. Нажмите, чтобы положить слой."></canvas>
+        <div class="hud"><span id="sc">0 этажей</span><span id="goal">Цель: 12</span><span id="best">Рекорд: 0</span></div>
+        <div class="overlay" id="ov"><div id="ovt">Нажми, чтобы начать<small>или пробел на клавиатуре</small></div></div>
+      </div>
+      <div class="goldnote" id="goldnote" hidden><svg class="ic"><use href="#i-spark"/></svg> Золотая башня открыта</div>
+      <div class="stats">
+        <div><b id="statBest">0</b><span>твой рекорд</span></div>
+        <div><b id="statStreak">0</b><span id="streakWord">дней подряд</span></div>
+      </div>
+      <a class="btn" data-track="mini-full-game" href="https://aasolo.github.io/ButerBashnya-1.0/">Полная версия игры</a>
+    </div>
+  </section>
+
+  <!-- 7. Заказ -->
+  <section class="ch" data-draw id="order">
+    <div class="inner split rev">
+      <div class="art"><svg viewBox="0 0 200 200" aria-hidden="true">
+        <path d="M30 120 C50 104 66 104 84 112 L120 128 C130 132 128 146 116 144 L92 138"/>
+        <path d="M30 120 L30 160"/>
+        <path d="M170 120 C150 104 132 100 116 106 L96 116 C88 120 92 130 100 128 L118 124"/>
+        <path d="M170 120 L170 160"/>
+        <path class="sun" d="M100 40 L106 58 L124 58 L110 70 L116 88 L100 77 L84 88 L90 70 L76 58 L94 58 Z"/>
+      </svg></div>
+      <div class="txt reveal">
+        <div class="num">последняя глава</div>
+        <h2>Сделаю и для тебя</h2>
+        <p>Нужна игра, приложение, сайт или AI-агент? Расскажи задачу, я предложу решение, сроки и стоимость.</p>
+        <ul class="svc">
+          <li><svg class="ic"><use href="#i-bot"/></svg><span>AI-агент или чат-бот</span></li>
+          <li><svg class="ic"><use href="#i-phone"/></svg><span>Приложение</span></li>
+          <li><svg class="ic"><use href="#i-web"/></svg><span>Сайт или лендинг</span></li>
+          <li><svg class="ic"><use href="#i-game"/></svg><span>Игра</span></li>
+          <li><svg class="ic"><use href="#i-spark"/></svg><span>Или что-то своё, обсудим</span></li>
+        </ul>
+        <a class="btn" data-track="order-dm" href="https://ig.me/m/misterandreos">Обсудить в директе</a><a class="btn ghost" data-track="idea-dm" href="https://ig.me/m/misterandreos">Предложить идею игры</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Бонус: игра про кимчи Глеба Ли -->
+  <section class="ch" data-draw id="kimchi">
+    <div class="inner split">
+      <div class="art"><svg viewBox="0 0 200 200" aria-hidden="true">
+        <rect x="36" y="78" width="128" height="92" rx="14"/>
+        <path d="M30 70 L170 70 L166 86 L34 86 Z"/>
+        <path class="sun" d="M52 112 C62 100 74 120 86 108 C98 96 108 122 120 108 C132 96 140 116 150 106"/>
+        <path class="sun" d="M50 136 C64 126 76 146 90 134 C104 122 116 146 128 134 C138 124 146 140 152 132"/>
+        <path class="code" d="M60 152 C74 146 86 158 100 152 C114 146 126 158 140 152"/>
+        <path class="sea" d="M84 50 C84 40 92 36 92 28"/><path class="sea" d="M100 52 C100 42 108 38 108 30"/><path class="sea" d="M116 50 C116 40 124 36 124 28"/>
+      </svg></div>
+      <div class="txt reveal">
+        <div class="num">бонус</div>
+        <h2>Кимчи Глеба Ли</h2>
+        <p>Игра, которую я сделал для Глеба: он готовит настоящее корейское кимчи. Играй, а потом загляни к автору рецепта.</p>
+        <a class="btn" id="kimchiPlay" data-track="card-kimchi" href="#">Играть</a><a class="btn ghost" data-track="kimchi-gleb" href="https://www.instagram.com/hoplalalei/">Кимчи @hoplalalei</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>Andreos, 2026 <a href="https://www.instagram.com/misterandreos/">Instagram</a><a href="https://www.threads.net/@misterandreos">Threads</a></footer>
+
+<script>
+/* ---------- светлая / тёмная тема ---------- */
+(()=>{const root=document.documentElement, btn=document.getElementById('themeBtn'), ico=document.getElementById('themeIco'), lab=document.getElementById('themeLabel'), meta=document.querySelector('meta[name="theme-color"]');
+  const sys=()=>matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+  let saved=null; try{saved=localStorage.getItem('theme')}catch(e){}
+  function apply(t){root.setAttribute('data-theme',t); const d=t==='dark'; ico.setAttribute('href',d?'#i-sun':'#i-moon'); lab.textContent=d?'Светлая':'Тёмная'; if(meta)meta.setAttribute('content',d?'#0f1120':'#f5f6fb'); window.__theme=t}
+  apply(saved||sys());
+  btn.addEventListener('click',()=>{const t=root.getAttribute('data-theme')==='dark'?'light':'dark'; apply(t); try{localStorage.setItem('theme',t)}catch(e){} track('theme-'+t); if(window.onThemeChange)window.onThemeChange(t)});
+})();
+/* ---------- ссылка на игру про кимчи: вставьте адрес игры в кавычки ---------- */
+const KIMCHI_URL = 'https://aasolo.github.io/kimchi-gleba/';
+(()=>{const b=document.getElementById('kimchiPlay'); if(KIMCHI_URL){b.href=KIMCHI_URL+(KIMCHI_URL.includes('?')?'&':'?')+'from=site'} else {b.textContent='Скоро'; b.removeAttribute('href'); b.style.opacity=.55; b.style.cursor='default'}})();
+function track(name){ try{ if(window.goatcounter && goatcounter.count) goatcounter.count({path:name,title:name,event:true}) }catch(e){} }
+document.addEventListener('click',e=>{const a=e.target.closest('[data-track]'); if(a) track(a.dataset.track)});
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const store={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function plural(n,a,b,c){const m=n%10,h=n%100;return m==1&&h!=11?a:(m>=2&&m<=4&&(h<10||h>=20)?b:c)}
+const toastEl=document.getElementById('toast'); let toastT;
+function toast(msg){toastEl.innerHTML=msg;toastEl.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>toastEl.classList.remove('on'),2600)}
+
+/* ---------- рисунки, которые прорисовываются при прокрутке ---------- */
+const scenes=[...document.querySelectorAll('[data-draw]')].map(sec=>{
+  const shapes=[...sec.querySelectorAll('.art svg *')].filter(el=>el.getTotalLength);
+  shapes.forEach(el=>{const L=el.getTotalLength(); el.style.strokeDasharray=L; el.style.strokeDashoffset=reduce?0:L; el._L=L});
+  return {sec,shapes};
+});
+const reveals=[...document.querySelectorAll('.reveal')], bar=document.getElementById('progress');
+let ticking=false;
+function update(){
+  ticking=false; const vh=innerHeight;
+  if(!reduce) scenes.forEach(({sec,shapes})=>{
+    const r=sec.getBoundingClientRect();
+    const p=Math.min(1,Math.max(0,(vh-r.top)/(vh*0.5+r.height*0.5)));
+    shapes.forEach((el,i)=>{const start=i/shapes.length*0.6, local=Math.min(1,Math.max(0,(p-start)/0.4)); el.style.strokeDashoffset=el._L*(1-local)});
+  });
+  reveals.forEach(el=>{if(el.getBoundingClientRect().top<vh*0.85) el.classList.add('on')});
+  const max=document.documentElement.scrollHeight-vh; bar.style.width=(max>0?scrollY/max*100:0)+'%';
+}
+addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(update)}},{passive:true});
+addEventListener('resize',update); update();
+
+/* ---------- секреты ---------- */
+let found=new Set(store.get('secrets',[]));
+const secN=document.getElementById('secN');
+function renderSecrets(){secN.textContent=found.size; document.getElementById('goldnote').hidden=found.size<3}
+renderSecrets();
+const secretFx={
+  lamp:el=>el.classList.toggle('lit'),
+  bot:el=>{el.querySelectorAll('.eye').forEach(e=>{e.animate([{transform:'scaleY(1)'},{transform:'scaleY(.1)'},{transform:'scaleY(1)'}],{duration:350})})},
+  fish:el=>{if(!reduce) el.querySelector('svg').animate([{transform:'translateX(0)'},{transform:'translateX(-24px) rotate(-4deg)'},{transform:'translateX(0)'}],{duration:900,easing:'ease-in-out'})}
+};
+document.querySelectorAll('.secret').forEach(el=>{
+  const go=()=>{
+    const k=el.dataset.secret; secretFx[k](el); chime();
+    const b=el.querySelector('.bubble'); b.classList.add('on'); setTimeout(()=>b.classList.remove('on'),2200);
+    if(!found.has(k)){found.add(k);store.set('secrets',[...found]);renderSecrets();track('secret-'+k);
+      toast(found.size<3?'Секрет '+found.size+' из 3 найден':'<svg class="ic"><use href="#i-spark"/></svg> Все 3 секрета найдены! Золотая башня ждёт в главе 7');
+      if(found.size===3) track('secrets-all');}
+  };
+  el.addEventListener('click',go);
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}});
+});
+document.getElementById('secrets').addEventListener('click',()=>toast(found.size<3?'Подсказка: нажимай на рисунки в главах':'<svg class="ic"><use href="#i-spark"/></svg> Все секреты найдены'));
+
+/* ---------- генератор идей ---------- */
+const who=['хомяк-повар','робот-курьер','кот-хакер','бабушка-ниндзя','пингвин-строитель','дракончик-почтальон','улитка-гонщик','призрак-библиотекарь','медведь-диджей','кактус-космонавт'];
+const what=['строит самую высокую башню из','убегает от','собирает','жонглирует','спасает город от','сортирует','ловит падающие','кормит армию','прячется от','доставляет'];
+const obj=['пончиков','облаков','носков','арбузов','пузырей','кексов','звёзд','лягушек','снежинок','пицц'];
+const twist=['за 30 секунд','одним пальцем','в невесомости','пока гаснет свет','задом наперёд','под дождём из конфет','на одной ноге','пока все спят'];
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const ideaEl=document.getElementById('idea'), sendIdea=document.getElementById('sendIdea');
+document.getElementById('genBtn').addEventListener('click',()=>{
+  const t='Игра, где '+pick(who)+' '+pick(what)+' '+pick(obj)+' '+pick(twist);
+  ideaEl.textContent=t; track('idea-generate'); sfx.idea();
+  if(!reduce) ideaEl.animate([{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'none'}],{duration:300});
+});
+
+/* ---------- звуки природы (всё создаётся в браузере, без файлов) ----------
+   Днём (светлая тема): ветер, ручей и птицы. Ночью (тёмная тема): ветер, сверчки и изредка сова. */
+let AC=null, master=null, ambBus=null, sfxBus=null, verb=null, musicOn=false, natT=[], natNodes=[];
+const midi=m=>440*Math.pow(2,(m-69)/12);
+const NOTES=[60,62,64,67,69,72,74,76,79,81].map(midi);
+const rnd=(a,b)=>a+Math.random()*(b-a);
+let whiteBuf=null, brownBuf=null;
+function makeBuffers(){
+  const n=AC.sampleRate*4; whiteBuf=AC.createBuffer(1,n,AC.sampleRate); brownBuf=AC.createBuffer(1,n,AC.sampleRate);
+  const w=whiteBuf.getChannelData(0), br=brownBuf.getChannelData(0); let last=0;
+  for(let i=0;i<n;i++){const x=Math.random()*2-1; w[i]=x; last=(last+0.02*x)/1.02; br[i]=last*3.5}
+}
+function makeImpulse(sec,decay){const len=AC.sampleRate*sec,buf=AC.createBuffer(2,len,AC.sampleRate);for(let c=0;c<2;c++){const d=buf.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,decay)}return buf}
+function initAudio(){
+  AC=new (window.AudioContext||window.webkitAudioContext)(); makeBuffers();
+  master=AC.createGain(); master.gain.value=1;
+  const comp=AC.createDynamicsCompressor(); comp.threshold.value=-16; comp.ratio.value=3;
+  verb=AC.createConvolver(); verb.buffer=makeImpulse(2.4,3.2); const wet=AC.createGain(); wet.gain.value=.28;
+  ambBus=AC.createGain(); ambBus.gain.value=0; sfxBus=AC.createGain(); sfxBus.gain.value=.9;
+  ambBus.connect(master); sfxBus.connect(master); master.connect(comp); comp.connect(AC.destination); master.connect(verb); verb.connect(wet); wet.connect(AC.destination);
+}
+function pan(node,p){ if(AC.createStereoPanner){const sp=AC.createStereoPanner(); sp.pan.value=p; node.connect(sp); return sp} return node }
+function loopNoise(buf){const s=AC.createBufferSource(); s.buffer=buf; s.loop=true; s.start(0,Math.random()*3); natNodes.push(s); return s}
+// медленно «дышащий» параметр
+function wander(param,lo,hi,every){const step=()=>{ if(!musicOn)return; param.linearRampToValueAtTime(rnd(lo,hi),AC.currentTime+every); natT.push(setTimeout(step,every*1000)) }; step()}
+function startAmbience(mode){
+  stopAmbience(true);
+  // ветер
+  const w=loopNoise(brownBuf), wl=AC.createBiquadFilter(), wg=AC.createGain();
+  wl.type='lowpass'; wl.frequency.value=500; wg.gain.value=mode==='night'?.16:.22;
+  w.connect(wl); wl.connect(wg); wg.connect(ambBus); wander(wl.frequency,250,900,3.5); wander(wg.gain,mode==='night'?.08:.12,mode==='night'?.2:.3,4.5);
+  if(mode==='day'){
+    // ручей: шум с «бульканьем»
+    const r=loopNoise(whiteBuf), bp=AC.createBiquadFilter(), lp=AC.createBiquadFilter(), rg=AC.createGain();
+    bp.type='bandpass'; bp.frequency.value=1600; bp.Q.value=.7; lp.type='lowpass'; lp.frequency.value=3500; rg.gain.value=.05;
+    r.connect(bp); bp.connect(lp); lp.connect(rg); rg.connect(pan(ambBus,-.35));
+    const bub=()=>{ if(!musicOn)return; const t=AC.currentTime; bp.frequency.setValueAtTime(rnd(900,2600),t); rg.gain.setTargetAtTime(rnd(.03,.07),t,.05); natT.push(setTimeout(bub,rnd(60,180))) }; bub();
+    const birds=()=>{ if(!musicOn)return; bird(AC.currentTime+.05,rnd(-.8,.8),Math.random()<.3?'long':'short'); natT.push(setTimeout(birds,rnd(1800,6000))) }; natT.push(setTimeout(birds,900));
+  } else {
+    const crick=()=>{ if(!musicOn)return; cricket(AC.currentTime+.02,rnd(-.7,.7)); natT.push(setTimeout(crick,rnd(500,1400))) }; crick();
+    const owl=()=>{ if(!musicOn)return; hoot(AC.currentTime+.05); natT.push(setTimeout(owl,rnd(12000,22000))) }; natT.push(setTimeout(owl,4000));
+  }
+}
+function stopAmbience(quick){ natT.forEach(clearTimeout); natT=[]; const ns=natNodes; natNodes=[]; ns.forEach(n=>{try{n.stop(AC.currentTime+(quick?.05:1.6))}catch(e){}}) }
+// голоса природы
+function chirpNote(t,f1,f2,d,v,bus,p){const o=AC.createOscillator(),g=AC.createGain(); o.type='sine'; o.frequency.setValueAtTime(f1,t); o.frequency.exponentialRampToValueAtTime(f2,t+d);
+  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(v,t+d*.2); g.gain.exponentialRampToValueAtTime(.0001,t+d); o.connect(g); g.connect(pan(bus||ambBus,p||0)); o.start(t); o.stop(t+d+.02)}
+function bird(t,p,kind,bus,vol){ const base=rnd(2600,4200), v=vol||.05, n=kind==='long'?Math.floor(rnd(5,9)):Math.floor(rnd(2,4));
+  for(let i=0;i<n;i++){const tt=t+i*rnd(.07,.13), up=Math.random()<.6; chirpNote(tt,up?base*rnd(.8,1):base*rnd(1.1,1.4),up?base*rnd(1.2,1.5):base*rnd(.7,.9),rnd(.05,.11),v,bus,p)} }
+function cricket(t,p){ const f=rnd(4200,4800), n=Math.floor(rnd(3,6));
+  for(let i=0;i<n;i++){const o=AC.createOscillator(),g=AC.createGain(),tt=t+i*.055; o.type='sine'; o.frequency.value=f; g.gain.setValueAtTime(0,tt); g.gain.linearRampToValueAtTime(.025,tt+.008); g.gain.exponentialRampToValueAtTime(.0001,tt+.04); o.connect(g); g.connect(pan(ambBus,p)); o.start(tt); o.stop(tt+.05)} }
+function hoot(t){ [[0,.5],[.62,.75]].forEach(([d,len])=>{const o=AC.createOscillator(),g=AC.createGain(),lfo=AC.createOscillator(),lg=AC.createGain(),tt=t+d;
+  o.type='sine'; o.frequency.setValueAtTime(380,tt); o.frequency.linearRampToValueAtTime(340,tt+len); lfo.frequency.value=6; lg.gain.value=6; lfo.connect(lg); lg.connect(o.frequency);
+  g.gain.setValueAtTime(0,tt); g.gain.linearRampToValueAtTime(.06,tt+.08); g.gain.exponentialRampToValueAtTime(.0001,tt+len); o.connect(g); g.connect(pan(ambBus,.4)); o.start(tt); lfo.start(tt); o.stop(tt+len+.05); lfo.stop(tt+len+.05)}) }
+function droplet(t,f,v,bus){const o=AC.createOscillator(),g=AC.createGain(); o.type='sine'; o.frequency.setValueAtTime(f,t); o.frequency.exponentialRampToValueAtTime(f*2.2,t+.05);
+  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(v,t+.004); g.gain.exponentialRampToValueAtTime(.0001,t+.12); o.connect(g); g.connect(bus||sfxBus); o.start(t); o.stop(t+.15)}
+function rustle(t,d,v,f){const s=AC.createBufferSource(),hp=AC.createBiquadFilter(),g=AC.createGain(); s.buffer=whiteBuf; hp.type='bandpass'; hp.frequency.value=f||5000; hp.Q.value=.6;
+  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(v,t+d*.3); g.gain.exponentialRampToValueAtTime(.0001,t+d); s.connect(hp); hp.connect(g); g.connect(sfxBus); s.start(t,Math.random()*3); s.stop(t+d+.02)}
+function gust(t){const s=AC.createBufferSource(),f=AC.createBiquadFilter(),g=AC.createGain(); s.buffer=brownBuf; f.type='bandpass'; f.Q.value=1.2; f.frequency.setValueAtTime(250,t); f.frequency.linearRampToValueAtTime(900,t+.6); f.frequency.linearRampToValueAtTime(300,t+1.3);
+  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(.35,t+.5); g.gain.exponentialRampToValueAtTime(.0001,t+1.4); s.connect(f); f.connect(g); g.connect(sfxBus); s.start(t,Math.random()*2); s.stop(t+1.5)}
+function wood(t,f,v){const o=AC.createOscillator(),g=AC.createGain(),bp=AC.createBiquadFilter(),s=AC.createBufferSource(),ng=AC.createGain();
+  o.type='triangle'; o.frequency.value=f; g.gain.setValueAtTime(v,t); g.gain.exponentialRampToValueAtTime(.0001,t+.18); o.connect(g); g.connect(sfxBus); o.start(t); o.stop(t+.2);
+  s.buffer=whiteBuf; bp.type='bandpass'; bp.frequency.value=f*2.5; bp.Q.value=4; ng.gain.setValueAtTime(v*.8,t); ng.gain.exponentialRampToValueAtTime(.0001,t+.05); s.connect(bp); bp.connect(ng); ng.connect(sfxBus); s.start(t,Math.random()*3); s.stop(t+.06)}
+function windChimes(t,n){const sc=[84,86,88,91,93,96]; for(let i=0;i<n;i++){const f=midi(sc[Math.floor(Math.random()*sc.length)]),tt=t+i*rnd(.08,.2),o=AC.createOscillator(),g=AC.createGain(),o2=AC.createOscillator(),g2=AC.createGain();
+  o.type='sine'; o.frequency.value=f; o2.type='sine'; o2.frequency.value=f*2.76; g.gain.setValueAtTime(0,tt); g.gain.linearRampToValueAtTime(.05,tt+.005); g.gain.exponentialRampToValueAtTime(.0001,tt+1.8);
+  g2.gain.setValueAtTime(0,tt); g2.gain.linearRampToValueAtTime(.015,tt+.005); g2.gain.exponentialRampToValueAtTime(.0001,tt+.6); o.connect(g); o2.connect(g2); g.connect(sfxBus); g2.connect(sfxBus); o.start(tt); o2.start(tt); o.stop(tt+1.9); o2.stop(tt+.7)}}
+
+/* ---------- звуки сайта ---------- */
+const isNight=()=> (window.__theme||document.documentElement.getAttribute('data-theme'))==='dark';
+const sfx={
+  ok:()=>AC&&musicOn,
+  click(){ if(!this.ok())return; droplet(AC.currentTime,rnd(500,800),.12) },
+  hover(){ if(!this.ok())return; rustle(AC.currentTime,.08,.02,6000) },
+  chapter(){ if(!this.ok())return; const t=AC.currentTime; gust(t); if(isNight()) cricket(t+.4,.3); else bird(t+.35,rnd(-.6,.6),'short',sfxBus,.06) },
+  secret(){ if(!this.ok())return; const t=AC.currentTime; bird(t,0,'long',sfxBus,.08); windChimes(t+.2,4) },
+  idea(){ if(!this.ok())return; const t=AC.currentTime; for(let i=0;i<5;i++) droplet(t+i*rnd(.05,.09),rnd(400,1100),.09) },
+  place(n){ if(!this.ok())return; wood(AC.currentTime,320+(n%12)*28,.22) },
+  cut(){ if(!this.ok())return; rustle(AC.currentTime,.25,.06,2500) },
+  over(){ if(!this.ok())return; const t=AC.currentTime; [0,.09,.2,.34].forEach((d,i)=>wood(t+d,300-i*45,.2)); rustle(t,.6,.05,1500) },
+  win(){ if(!this.ok())return; const t=AC.currentTime; windChimes(t,7); bird(t+.3,-.4,'long',sfxBus,.07); bird(t+.9,.4,'long',sfxBus,.06) },
+  on(){ windChimes(AC.currentTime,3) }
+};
+function chime(){ sfx.secret() }
+function tone(freq,t,dur,vol){ if(AC) droplet(t,freq,vol) }
+window.onThemeChange=()=>{ if(AC&&musicOn) startAmbience(isNight()?'night':'day') };
+
+document.addEventListener('click',e=>{ if(e.target.closest('a,button:not(#music):not(#genBtn):not(#themeBtn)')) sfx.click() });
+if(matchMedia('(hover:hover)').matches) document.querySelectorAll('.btn,.chip').forEach(el=>el.addEventListener('pointerenter',()=>sfx.hover()));
+const chObs=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting && musicOn && !e.target._heard){ e.target._heard=true; sfx.chapter() } }),{threshold:.6});
+document.querySelectorAll('.ch').forEach(c=>chObs.observe(c));
+
+const mBtn=document.getElementById('music'), mLabel=document.getElementById('musicLabel');
+mBtn.addEventListener('click',()=>{
+  if(!AC) initAudio();
+  musicOn=!musicOn; mBtn.setAttribute('aria-pressed',musicOn); mLabel.textContent=musicOn?'Природа вкл':'Природа';
+  const now=AC.currentTime; ambBus.gain.cancelScheduledValues(now); ambBus.gain.setValueAtTime(ambBus.gain.value,now);
+  if(musicOn){ AC.resume(); sfx.on(); ambBus.gain.linearRampToValueAtTime(1,now+3); startAmbience(isNight()?'night':'day'); track('music-on');
+    document.querySelectorAll('.ch').forEach(c=>{const r=c.getBoundingClientRect(); if(r.top<innerHeight*.4&&r.bottom>innerHeight*.6) c._heard=true}); }
+  else{ ambBus.gain.linearRampToValueAtTime(0,now+1.2); stopAmbience(false) }
+});
+
+/* ---------- вызов дня ---------- */
+function localKey(d){return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
+const today=new Date(), dayKey=localKey(today);
+const yd=new Date(today); yd.setDate(yd.getDate()-1); const yKey=localKey(yd);
+const dayNum=Math.floor(Date.UTC(today.getFullYear(),today.getMonth(),today.getDate())/864e5);
+const GOAL=8+((dayNum*7)%9);
+document.getElementById('goal').textContent='Цель: '+GOAL;
+let streak=store.get('streak',{last:null,count:0});
+if(streak.last && streak.last!==dayKey && streak.last!==yKey) streak.count=0;
+function renderDaily(){
+  const done=streak.last===dayKey;
+  document.getElementById('dailyText').innerHTML=done?'<span class="done"><svg class="ic"><use href="#i-check"/></svg> Выполнено</span> Завтра новая цель':'Построй '+GOAL+' '+plural(GOAL,'этаж','этажа','этажей');
+  document.getElementById('statStreak').textContent=streak.count;
+  document.getElementById('streakWord').textContent=plural(streak.count,'день','дня','дней')+' подряд';
+}
+renderDaily();
+function completeDaily(){
+  if(streak.last===dayKey) return;
+  streak={last:dayKey,count:(streak.last===yKey?streak.count:0)+1};
+  store.set('streak',streak); track('daily-complete'); renderDaily(); toast('<svg class="ic"><use href="#i-flame"/></svg> Вызов дня выполнен! Серия: '+streak.count); sfx.win();
+}
+
+/* ---------- мини-игра ---------- */
+(() => {
+  const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+  const W=cv.width, H=cv.height, LH=26;
+  const NORMAL=['#f0a85a','#6b3a22','#ffc42e','#7cc142','#6b3a22','#e8412c'];
+  const GOLD=['#f7d774','#e8b923','#ffe9a3','#d4a017','#f5c542','#fff1b8'];
+  const colors=()=>found.size>=3?GOLD:NORMAL;
+  const scEl=document.getElementById('sc'), bestEl=document.getElementById('best'), statBest=document.getElementById('statBest');
+  const ov=document.getElementById('ov'), ovt=document.getElementById('ovt');
+  let best=store.get('tower-best',0);
+  const showBest=()=>{bestEl.textContent='Рекорд: '+best; statBest.textContent=best};
+  showBest();
+  let stack=null, cur, dir, speed, state='idle', falling=[], camY=0, reached=false;
+  const word=n=>plural(n,'этаж','этажа','этажей');
+  function reset(){stack=[{x:W/2-85,w:170,c:colors()[0]}];falling=[];camY=0;speed=2.2;reached=false;newLayer()}
+  function newLayer(){const top=stack[stack.length-1];dir=stack.length%2?1:-1;const C=colors();
+    cur={x:dir>0?-top.w*0.3:W-top.w*0.7,w:top.w,c:C[stack.length%C.length]}}
+  const yOf=i=>H-36-i*LH;
+  function drop(){
+    if(state!=='play'){track(state==='idle'?'mini-start':'mini-restart');reset();state='play';ov.hidden=true;scEl.textContent='0 этажей';return}
+    const top=stack[stack.length-1];
+    const l=Math.max(cur.x,top.x), r=Math.min(cur.x+cur.w,top.x+top.w);
+    if(r<=l){falling.push({...cur,y:yOf(stack.length),vy:0});return gameOver()}
+    if(cur.x<l) falling.push({x:cur.x,w:l-cur.x,c:cur.c,y:yOf(stack.length),vy:0});
+    if(cur.x+cur.w>r) falling.push({x:r,w:cur.x+cur.w-r,c:cur.c,y:yOf(stack.length),vy:0});
+    stack.push({x:l,w:r-l,c:cur.c});
+    const n=stack.length-1; scEl.textContent=n+' '+word(n);
+    sfx.place(n); if(cur.x<l||cur.x+cur.w>r) sfx.cut();
+    if(n>=GOAL && !reached){reached=true;completeDaily()}
+    speed=Math.min(6,speed+0.15); newLayer();
+  }
+  function gameOver(){
+    state='over'; const n=stack.length-1; sfx.over();
+    track('mini-over-'+(n<5?'0-4':n<10?'5-9':n<20?'10-19':'20plus'));
+    if(n>best){best=n;store.set('tower-best',best);showBest()}
+    const msg=n>=GOAL?'Цель дня выполнена! Завтра будет новая.':'До цели '+(GOAL-n)+' '+word(GOAL-n)+'. Нажми, чтобы ещё раз.';
+    ovt.innerHTML=n+' '+word(n)+'<small>'+msg+'</small>'; ov.hidden=false;
+  }
+  function layer(x,y,w,c,isTop){ctx.fillStyle=c;const r=isTop?Math.min(14,w/2):6;ctx.beginPath();ctx.roundRect(x,y,w,LH-3,isTop?[r,r,6,6]:6);ctx.fill()}
+  function frame(){
+    const target=Math.max(0,(stack?stack.length:1)*LH-H*0.55); camY+=(target-camY)*0.1;
+    ctx.clearRect(0,0,W,H); ctx.save(); ctx.translate(0,camY);
+    if(stack){
+      stack.forEach((s,i)=>layer(s.x,yOf(i),s.w,s.c));
+      if(state==='play'){cur.x+=dir*speed; if(cur.x>W-cur.w*0.7)dir=-1; if(cur.x<-cur.w*0.3)dir=1; layer(cur.x,yOf(stack.length),cur.w,cur.c,true)}
+      falling.forEach(f=>{f.vy+=0.6;f.y+=f.vy;layer(f.x,f.y,f.w,f.c)}); falling=falling.filter(f=>f.y-camY<H+60);
+    } else {[170,160,150,140].forEach((w,i)=>layer(W/2-w/2,yOf(i),w,colors()[i]))}
+    ctx.restore(); requestAnimationFrame(frame);
+  }
+  cv.addEventListener('pointerdown',e=>{e.preventDefault();drop()});
+  addEventListener('keydown',e=>{if(e.code!=='Space')return; const r=cv.getBoundingClientRect(); const vis=r.top<innerHeight*0.8&&r.bottom>innerHeight*0.2; if(vis&&(document.activeElement===document.body||document.activeElement===cv)){e.preventDefault();drop()}});
+  frame();
+})();
+</script>
+</body>
+</html>
