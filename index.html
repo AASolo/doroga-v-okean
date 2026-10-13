@@ -55,6 +55,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--sun);outline-of
 .iconbtn.off{opacity:.55}
 .hp{display:flex;gap:10px;align-items:center;margin:0;font-size:14.5px;color:#f1dcc0;line-height:1.4}.hp svg{flex:none;width:22px;height:22px;color:var(--sun)}
 .hp.sm{font-size:12.5px;padding:2px 4px 6px;color:var(--mist)}.hp.sm svg{width:16px;height:16px}
+.remind{display:grid;gap:10px;padding:16px;border-radius:18px;border:1px solid rgba(255,213,140,.3);background:rgba(255,190,110,.08)}.remind h3{margin:0;font-family:var(--display);font-size:20px}
 .calm{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:14px 16px;border-radius:18px;border:1px solid rgba(255,213,140,.35);background:linear-gradient(120deg,rgba(255,190,110,.14),rgba(110,200,220,.10))}
 .calm b{display:block;font-family:var(--display);font-size:18px}.calm span{font-size:14px;color:#e9d6bf}
 .calm .ghost{border-color:rgba(255,213,140,.6)}
@@ -352,9 +353,15 @@ input[type=text]{font:inherit;font-size:16px;color:var(--foam);background:rgba(2
         <li>Воду насыщает кислородом компрессор на тумбе: по шлангу воздух идёт к распылителю на дне, и вверх поднимается струя мелких пузырьков. Коснись компрессора или распылителя, чтобы выключить или включить его. Без кислорода вода портится быстрее.</li>
         <li>У рыбки есть глиняный домик с трубой. Ночью она спит в нём, а когда пугается, заплывает туда через дверь. Рядом живут креветка-чистильщик и морская звезда, а креветка иногда чистит рыбку. Ещё в аквариуме живут маленькие соседи: стайка зелёных хромисов, пара огненных рыбок у камней и неоновые бычки, которые сидят на камнях.</li>
         <li>Иногда по переднему бортику аквариума проходит котик. Его самого не видно, только тень на дне: он идёт, ложится, следит за рыбкой, виляет перед броском, тянет лапку в воду и стряхивает её. Поймать рыбку он не сможет, а если коснуться тени, котик уйдёт.</li>
-        <li>Кнопка с лампочкой вверху переключает свет: дневной, тёплая лампа и ночник. Сначала свет подбирается по времени суток.</li>
+        <li>Переключатель «День / Вечер / Ночь» вверху меняет свет: дневной, тёплая лампа и ночник. Сначала свет подбирается по времени суток.</li>
         <li>После 30 дней роста рыбку можно выпустить в океан. Время идёт, даже когда игра закрыта.</li>
       </ol>
+      <div class="remind" id="remindBox">
+        <h3>Напоминания</h3>
+        <p class="note" style="font-size:14px">Рыбка живёт по своим часам, даже когда игра закрыта. Включи напоминания — и ты точно не пропустишь момент, когда она ждёт корм.</p>
+        <div class="btns"><button class="ghost" id="btnNotif">Уведомления в браузере</button><button class="ghost" id="btnIcs">Напоминания в календарь</button></div>
+        <p class="note" id="notifSt"></p>
+      </div>
       <div class="btns">
         <button class="primary" id="btnHelpClose">Вернуться к рыбке</button>
         <button class="ghost" id="btnRestart">Начать заново</button>
@@ -1683,8 +1690,8 @@ function drawSoft(c,arr,dt,col,wind){for(let i=arr.length-1;i>=0;i--){const p=ar
 let hearthLast=0;
 function drawHearth(c){
   const base=GR.y0+GR.h+Math.max(6,GR.h*.03),side=W-(GR.x0+GR.w),u=Math.min(W,H)/700;
-  // стоят на тумбе перед правым углом аквариума (если сбоку есть место — рядом с ним)
-  const sc=Math.min(1.6,Math.max(.8,u*1.45)),fits=side>=90*sc,mx=fits?GR.x0+GR.w+26*sc:GR.x0+GR.w-64*sc;
+  // стоят на тумбе справа от аквариума; если места сбоку нет (телефон), не рисуются, чтобы не оказаться «внутри» аквариума
+  const sc=Math.min(1.6,Math.max(.8,u*1.45)),fits=side>=90*sc;if(!fits)return;const mx=GR.x0+GR.w+26*sc;
   if(base>H-4)return;const now=performance.now()/1000,dt=Math.min(.05,now-(hearthLast||now));hearthLast=now;
   c.save();c.translate(mx,base);c.scale(sc,sc);
   const lit=LS.warm>.1?Math.min(1,(LS.warm-.08)*6):0,fl=.86+.08*Math.sin(T*11.3)+.05*Math.sin(T*17.1+1)+.03*Math.sin(T*29);
@@ -2053,7 +2060,7 @@ document.querySelectorAll('#lampSeg button').forEach(b=>b.addEventListener('clic
   if(game&&((from==='day'&&lampKey==='night')||(from==='night'&&lampKey==='day')))game.shock=Math.min(60,(game.shock||0)+8);
   toast(lampKey==='day'?'День. Светло и бодро, рыбка охотно исследует аквариум.':lampKey==='eve'?'Вечер. Тёплая лампа, гирлянда и тихая музыка. Почувствуй, как замедляется время.':'Ночь. Мягкий ночник, рыбка засыпает в домике. Можно выдохнуть и отдохнуть вместе с ней.');}));
 syncLampSeg();
-$('#btnHelp').addEventListener('click',()=>{$('#scrHelp').hidden=false;const b=$('#btnRestart');b.dataset.c='';b.textContent='Начать заново';});
+$('#btnHelp').addEventListener('click',()=>{$('#scrHelp').hidden=false;notifState();const b=$('#btnRestart');b.dataset.c='';b.textContent='Начать заново';});
 $('#btnHelpClose').addEventListener('click',()=>{$('#scrHelp').hidden=true;});
 $('#btnRestart').addEventListener('click',e=>{const b=e.currentTarget;if(b.dataset.c!=='1'){b.dataset.c='1';b.textContent='Точно? Рыбка пропадёт. Нажми ещё раз';return;}
   b.dataset.c='';G.cur=null;game=null;cat=null;clearFoods();save();$('#scrHelp').hidden=true;showStart();});
@@ -2187,8 +2194,40 @@ function askCalmAfter(){const c=$('#testCard'),b=G.calm.before;hideAll();$('#scr
     $('#aftBack').addEventListener('click',()=>{$('#scrTest').hidden=true;});$('#aftBr').addEventListener('click',()=>{$('#scrTest').hidden=true;startBreath();});});}
 $('#btnTestStart').addEventListener('click',()=>{audioInit();openTest('start');});
 $('#btnMe').addEventListener('click',()=>{audioInit();openTest('play');});
+/* ===== напоминания: уведомления браузера и календарь ===== */
+const NOTIF_OK=typeof Notification!=='undefined';
+function notifState(){const el=$('#notifSt');if(!el)return;
+  if(!NOTIF_OK){el.textContent='Этот браузер не умеет показывать уведомления. Добавь напоминания в календарь — они сработают даже при закрытой игре.';return;}
+  el.textContent=Notification.permission==='granted'&&G.notif?'Уведомления включены. Они приходят, пока игра открыта — хоть в фоновой вкладке. Чтобы напоминания приходили при закрытой игре, добавь их в календарь.':Notification.permission==='denied'?'Уведомления запрещены в настройках браузера для этого сайта. Разреши их там или добавь напоминания в календарь.':'';}
+$('#btnNotif').addEventListener('click',async()=>{if(!NOTIF_OK){notifState();return;}
+  try{const r=await Notification.requestPermission();G.notif=r==='granted';save();notifState();
+    if(G.notif){const n=game?game.name:'Рыбка';new Notification('Напоминания включены',{body:`${n} даст знать, когда проголодается. Ты всегда будешь рядом в нужный момент.`,icon:FISH_ICON,tag:'doroga'});}}catch(e){notifState();}});
+// .ics: три кормления в день на всё время роста
+function icsDate(d){const p=n=>String(n).padStart(2,'0');return d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'T'+p(d.getHours())+p(d.getMinutes())+'00';}
+$('#btnIcs').addEventListener('click',()=>{const n=game?game.name:'рыбку',fast=game&&game.mode==='fast';
+  const left=game?Math.max(1,Math.ceil(30-game.growth)):30,url='https://aasolo.github.io/doroga-v-okean/';
+  const ev=[];const start=new Date();start.setSeconds(0,0);
+  if(fast){// быстрый режим: напоминание каждые 3 часа игрового... лучше раз в 20 минут реального времени на ближайшие 4 часа
+    for(let i=1;i<=12;i++){const d=new Date(start.getTime()+i*20*60000);ev.push([d,`Покорми ${n}`]);}}
+  else for(const [h,m,t] of [[9,0,'Утреннее кормление'],[14,0,'Дневное кормление'],[20,0,'Вечернее кормление']]){const d=new Date(start);d.setHours(h,m,0,0);if(d<start)d.setDate(d.getDate()+1);ev.push([d,`${t}: ${n} ждёт`,left]);}
+  const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Doroga v okean//RU','CALSCALE:GREGORIAN'];
+  ev.forEach(([d,title,cnt],i)=>{lines.push('BEGIN:VEVENT','UID:doroga-'+Date.now()+'-'+i+'@aasolo.github.io','DTSTAMP:'+icsDate(new Date()),'DTSTART:'+icsDate(d),'DURATION:PT5M','SUMMARY:🐠 '+title,
+    'DESCRIPTION:Загляни в аквариум\\, покорми рыбку и сделай пару спокойных вдохов. '+url,'URL:'+url);if(cnt)lines.push('RRULE:FREQ=DAILY;COUNT='+cnt);
+    lines.push('BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+title,'TRIGGER:PT0M','END:VALARM','END:VEVENT');});
+  lines.push('END:VCALENDAR');const blob=new Blob([lines.join('\r\n')],{type:'text/calendar'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='doroga-v-okean-napominaniya.ics';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},2000);
+  $('#notifSt').textContent=fast?'Файл скачан: 12 напоминаний каждые 20 минут на ближайшие 4 часа. Открой его — и календарь сам добавит их.':`Файл скачан: напоминания в 9:00, 14:00 и 20:00 на ${left} ${plural(left,'день','дня','дней')}. Открой его — и календарь сам добавит их.`;});
+const FISH_ICON='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#1b2a2a"/><ellipse cx="30" cy="32" rx="18" ry="12" fill="#f27010"/><path d="M46 32l12-9v18z" fill="#f27010"/><path d="M22 21c3 6 3 16 0 22M33 20c3 7 3 17 0 24" stroke="#fff" stroke-width="4" fill="none"/><circle cx="18" cy="29" r="2.4" fill="#111"/></svg>');
+// проверка в фоне: таймеры работают и в свёрнутой вкладке
+let notifLast={h:0,w:0},titleBase=document.title,titleBlink=null;
+setInterval(()=>{if(mode!=='play'||!game||game.status!=='alive')return;try{simulateTo(Date.now());}catch(e){}
+  const need=game.hunger<35?'h':game.water<45?'w':null,now=Date.now();
+  if(document.hidden&&need){if(!titleBlink){let k=0;titleBlink=setInterval(()=>{document.title=(k++%2)?titleBase:(need==='h'?`🐠 ${game.name} голодна`:'🐠 Вода мутнеет');},1500);}
+    if(NOTIF_OK&&G.notif&&Notification.permission==='granted'&&now-notifLast[need]>15*60000){notifLast[need]=now;
+      try{const n=new Notification(need==='h'?`${game.name} проголодалась`:'Вода в аквариуме мутнеет',{body:need==='h'?'Загляни на минутку и покорми её — она уже ждёт у поверхности.':'Смени воду и позови уборщиков, чтобы рыбке снова стало легко дышать.',icon:FISH_ICON,tag:'doroga-'+need,renotify:true});n.onclick=()=>{window.focus();n.close();};}catch(e){}}}
+},30000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&titleBlink){clearInterval(titleBlink);titleBlink=null;document.title=titleBase;}});
 function hideAll(){['#scrStart','#scrHelp','#scrDead','#scrFree','#scrInfo','#scrTest'].forEach(s=>$(s).hidden=true);}
-function setPlaying(on){if(on&&!G.hpTip&&AU.on){G.hpTip=1;save();setTimeout(()=>toast('Совет: надень наушники. Вода, пузырьки и музыка зазвучат вокруг тебя, и ты почувствуешь, как дыхание само становится медленнее.'),2500);}$('#app').classList.toggle('playing',on);$('#hud').hidden=!on;$('#lampSeg').hidden=!on;$('#panel').hidden=!on;requestAnimationFrame(resize);}
+function setPlaying(on){if(on&&!G.remindTip){G.remindTip=1;save();setTimeout(()=>toast('Хочешь, рыбка будет звать тебя сама? Включи напоминания в разделе «?» — и ты не пропустишь кормление.'),9000);}if(on&&!G.hpTip&&AU.on){G.hpTip=1;save();setTimeout(()=>toast('Совет: надень наушники. Вода, пузырьки и музыка зазвучат вокруг тебя, и ты почувствуешь, как дыхание само становится медленнее.'),2500);}$('#app').classList.toggle('playing',on);$('#hud').hidden=!on;$('#lampSeg').hidden=!on;$('#panel').hidden=!on;requestAnimationFrame(resize);}
 function resetOcean(){relBoost=1;if(lampKey==='sunset'){lampKey=LAMPS[G.lamp]?G.lamp:'eve';}camera.position.set(0,-.1,CAMZ);camera.rotation.set(0,0,0);relDrops.length=0;oceanFloor.visible=false;surface.scale.set(WT,1,1);surface.position.z=0;[back,sideL,sideR,sandFront,room,FRAME.grp,AER.grp].forEach(o=>o.visible=true);if(school){scene.remove(school);school=null;}$('#freeText').classList.remove('show');}
 function showStart(){
   mode='start';cat=null;resetOcean();hideAll();$('#scrStart').hidden=false;setPlaying(false);$('#releaseBtn').hidden=true;clearFoods();
